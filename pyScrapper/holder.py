@@ -3,8 +3,8 @@ import praw
 import pandas as pd
 
 # Ask for user authentication first
-usernamed = 'zakapalooza' #input("What's your username? ")
-passwrd = 'Sam!102589' #input("What's your password? ")
+usernamed = '' #input("What's your username? ")
+passwrd = '' #input("What's your password? ")
 
 # User will need to create an app in reddit and put in the id and secret tokens to use this
 reddit = praw.Reddit(client_id='uNyVpBjMbWzxIQ', \
@@ -24,12 +24,16 @@ savedcontent = reddit.user.me().saved(limit=None)
 # Checks each saved content to see if it is a comment or submitted post instance and appends to respective dictionaries
 for submission in savedcontent:
     if isinstance(submission, praw.models.Submission):
-            savedpostsdict.update( {submission.subreddit : submission.url} )
+            savedpostsdict.update( {str(submission.subreddit) : submission.url} )
+
+count = 0
 
 
-for items in savedpostsdict:
-    print(savedpostsdict.get(items))
+for items in sorted(savedpostsdict.keys()):
+    print(items , " : " , savedpostsdict[items])
+    count += 1
 
+print(count)
 # Formats dictonaries with scraped data accordingly with Pandas
 #present_posts_data = pd.DataFrame(savedpostsdict)
 
