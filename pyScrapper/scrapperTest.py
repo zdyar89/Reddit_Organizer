@@ -26,6 +26,10 @@ for submission in savedcontent:
         savedpostsdict["saved content url"].append(submission.url)
         savedpostsdict["saved content title"].append(submission.title)
 
+for items in savedpostsdict:
+    print(items)
+    print("test")
+
 present_posts_data= pd.DataFrame(savedpostsdict)
 present_comments_data = pd.DataFrame(savedcommentsdict)
 present_posts_data.to_csv('savedredditposts.csv', index=True)
