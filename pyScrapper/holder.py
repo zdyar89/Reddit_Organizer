@@ -3,8 +3,8 @@ import praw
 import pandas as pd
 
 # Ask for user authentication first
-usernamed = '' #input("What's your username? ")
-passwrd = '' #input("What's your password? ")
+usernamed = 'zakapalooza' #input("What's your username? ")
+passwrd = 'Sam!102589' #input("What's your password? ")
 
 # User will need to create an app in reddit and put in the id and secret tokens to use this
 reddit = praw.Reddit(client_id='uNyVpBjMbWzxIQ', \
@@ -16,24 +16,27 @@ reddit = praw.Reddit(client_id='uNyVpBjMbWzxIQ', \
 # Created two dictionaries to store the saved content. One for posts and one for comments since they can't mingle
 #savedpostsdict = {"subreddit": [], \"saved content url":[], \"saved content title":[] }
 
-savedpostsdict = {'key': 'value'}
-
+savedpostsdict = {}
 # Scrapes all of the user's own content
 savedcontent = reddit.user.me().saved(limit=None)
 
+count = 0
 # Checks each saved content to see if it is a comment or submitted post instance and appends to respective dictionaries
 for submission in savedcontent:
     if isinstance(submission, praw.models.Submission):
-            savedpostsdict.update( {str(submission.subreddit) : submission.url} )
+            savedpostsdict.setdefault(str(submission.subreddit), [])
+            savedpostsdict[str(submission.subreddit)].append(submission.url + " : ")
+            count += 1
+        
 
-count = 0
+File_object = open(r"/home/zachd/Desktop/redditsort.txt","w")
 
 
 for items in sorted(savedpostsdict.keys()):
-    print(items , " : " , savedpostsdict[items])
-    count += 1
+   File_object.writelines(items +  " : " + savedpostsdict[items] + "\n")
+    
 
-print(count)
+File_object.close()
 # Formats dictonaries with scraped data accordingly with Pandas
 #present_posts_data = pd.DataFrame(savedpostsdict)
 
