@@ -1,6 +1,7 @@
 # Will be using praw modules. And pandas to format the scraped data to port to .csv file
 import praw
 import pandas as pd
+import csv
 
 # Ask for user authentication first
 usernamed = 'zakapalooza' #input("What's your username? ")
@@ -29,14 +30,15 @@ for submission in savedcontent:
             count += 1
         
 
-File_object = open(r"/home/zachd/Desktop/redditsort.txt","w")
 
+with open('mycsv.csv', 'w', newLine='') as f:
+    thewriter = csv.writer(f)
 
-for items in sorted(savedpostsdict.keys()):
-   File_object.writelines(items +  " : " + savedpostsdict[items] + "\n")
-    
+    thewriter.writerow(['col1', 'col2', 'col3'])
+    thewriter.writerow(['one', 'two', 'three'])
 
-File_object.close()
+##could use pickle module to store as binary stream for lists
+
 # Formats dictonaries with scraped data accordingly with Pandas
 #present_posts_data = pd.DataFrame(savedpostsdict)
 
