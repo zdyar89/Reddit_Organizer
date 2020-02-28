@@ -17,7 +17,7 @@ reddit = praw.Reddit(client_id='uNyVpBjMbWzxIQ', \
 # Created two dictionaries to store the saved content. One for posts and one for comments since they can't mingle
 #savedpostsdict = {"subreddit": [], \"saved content url":[], \"saved content title":[] }
 
-savedpostsdict = {}
+savedpostsdict = dict.fromkeys(["SubReddit", "Title", "Link"])
 # Scrapes all of the user's own content
 savedcontent = reddit.user.me().saved(limit=None)
 
@@ -26,16 +26,12 @@ count = 0
 for submission in savedcontent:
     if isinstance(submission, praw.models.Submission):
             savedpostsdict.setdefault(str(submission.subreddit), [])
-            savedpostsdict[str(submission.subreddit)].append(submission.url + " : ")
+            savedpostsdict[str(submission.subreddit)].append(submission.title)
             count += 1
         
+for item in sorted(savedpostsdict):
+    print(item, ':', savedpostsdict[item], '\n')
 
-
-with open('mycsv.csv', 'w', newLine='') as f:
-    thewriter = csv.writer(f)
-
-    thewriter.writerow(['col1', 'col2', 'col3'])
-    thewriter.writerow(['one', 'two', 'three'])
 
 ##could use pickle module to store as binary stream for lists
 
